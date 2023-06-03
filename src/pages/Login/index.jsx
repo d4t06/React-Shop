@@ -72,7 +72,6 @@ function LoginPage() {
    // }, [persist]);
 
    return (
-      <div className="wrap">
          <form className={cx('form')} onSubmit={handleSubmit}>
             {errMsg && <h2 className={cx('error-msg')}>{errMsg}</h2>}
             <h1>Đăng nhập</h1>
@@ -120,7 +119,7 @@ function LoginPage() {
             </a>
          </div> */}
 
-            <button className={cx('login-form-btn')} type="submit">
+            <button className={cx('submit-btn')} type="submit">
                Đăng nhập
             </button>
             <span className={cx('register-text')}>
@@ -128,7 +127,6 @@ function LoginPage() {
                <Link to="/register"> Đăng ký ngay</Link>
             </span>
          </form>
-      </div>
    );
 }
 export default LoginPage;

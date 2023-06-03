@@ -1,8 +1,8 @@
 .dashboard_wrapper {
-    position: absolute;
-    top: 35px;
-    bottom: 0;
-    left: 180px;
-    right: 0;
+    height: 100vh;
+    min-height: 500px;
+    min-width: 900px;
+    padding-top: 35px;
+    padding-left: 180px;
     background-color: #f1f1f1;
 }

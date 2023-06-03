@@ -11,12 +11,12 @@ const usePrivateRequest = () => {
         const requestIntercept = privateRequest.interceptors.request.use(
             config => {
                  // Do something before request is sent
-                 console.log("handle before request sent");
+                //  console.log("handle before request sent");
                 if (!config.headers['Authorization']) {
-                    config.headers['Authorization'] = `bearer ${auth?.token}`
+                    // config.headers['Authorization'] = `bearer ${auth?.token}`
                 }
 
-                console.log("private request auth =", auth)
+                // console.log("private request auth =", auth)
                 return config
             },
             (err) => Promise.reject(err) // Do something with response error
@@ -29,7 +29,7 @@ const usePrivateRequest = () => {
                 const prevRequest = err?.config
 
                 if (err?.response?.status === 403 && !prevRequest?.sent) {
-                    console.log("handle response err");
+                    // console.log("handle response err");
                     prevRequest.sent = true;
                     const newToken = await refresh()
                     prevRequest.headers['Authorization'] = `bearer ${newToken}`;

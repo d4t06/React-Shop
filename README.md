@@ -125,3 +125,9 @@
 - Fix imageSlider
 - Thêm file config
 - Sửa logic getMoreProducts thành push mảng vào
+
+### update thứ 7 3/6/2023
+- Tạo component Gallery
+- Thêm ảnh và xóa ảnh
+- Dùng protal render Modal ra ngoài cùng
+

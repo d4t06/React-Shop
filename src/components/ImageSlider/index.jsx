@@ -31,7 +31,7 @@ function ImageSlider({ banner, data }) {
   const maxScroll = imageWidth * (data.length - 1);
 
   useEffect(() => {
-    console.log("isEnter = ", isEnter);
+    // console.log("isEnter = ", isEnter);
     if (isEnter) return;
     const id = setInterval(() => {
       // console.log('useEffect auto slide');
@@ -93,7 +93,7 @@ function ImageSlider({ banner, data }) {
   };
 
   const handleMouseLeave = () => {
-    console.log("handleMouseLeave");
+    // console.log("handleMouseLeave");
     setIsEnter(false);
     if (isDrag) handleStopDrag();
   };
@@ -178,7 +178,7 @@ function ImageSlider({ banner, data }) {
     banner,
   });
 
-  console.log("image slider re-render");
+  // console.log("image slider re-render");
 
   return (
     <div

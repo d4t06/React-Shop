@@ -17,7 +17,6 @@ const cx = classNames.bind(styles);
 function DetailProductItem({ data }) {
    const [showModal, setShowModal] = useState(false);
 
-   // return <h1>Detai page</h1>
    const paramsIndex = [
       'Màn hình',
       'Hệ điều hành',
@@ -29,18 +28,18 @@ function DetailProductItem({ data }) {
       'Sim',
       'Pin',
    ];
-   let params = data ? data.data.params : '';
+   let params = data.data ? data.data?.params : '';
    params = params
       .slice(0, params.length - 5)
       .replaceAll('//', ', ')
       .split('*and*');
 
-   let colors = data.data.colors;
+   let colors = data?.data ? data.data?.colors : '';
    if (colors) {
       colors = colors.slice(0, colors.length - 5).split('*and*');
    }
 
-   let memories = data.data.memories;
+   let memories = data?.data ? data.data?.memories : ''
    if (memories) {
       memories = memories.slice(0, memories.length - 5).split('*and*');
    }

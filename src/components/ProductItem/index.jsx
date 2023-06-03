@@ -5,7 +5,7 @@ import moneyFormat from "../../utils/moneyFormat.js";
 
 const cx = classNames.bind(styles);
 function ProductItem({ data, searchResultPage, preview }) {
-   console.log("products = ", data);
+   // console.log("products = ", data);
 
    const featureText = data.feature || data.featureText || '';
    const features = featureText
@@ -13,7 +13,7 @@ function ProductItem({ data, searchResultPage, preview }) {
       : "";
 
    return (
-      <div className={cx("col", searchResultPage ? "col-3" : preview ? "col-half" : "col-4")}>
+      <div className={cx("col", searchResultPage ? "col-3" : preview ? "col-9" : "col-4")}>
          <div className={cx("product-item")}>
             {/* preview in dashboard */}
             {preview ? (
@@ -41,7 +41,7 @@ function ProductItem({ data, searchResultPage, preview }) {
                   <img
                      className={cx("product-item-image")}
                      src={
-                        data?.image_path.includes(".jpg")
+                        data.image_path?.includes(".jpg")
                            ? data.image_path
                            : "https://placehold.co/300X400"
                      }
@@ -66,7 +66,7 @@ function ProductItem({ data, searchResultPage, preview }) {
                </div>
             )}
             <div className={cx("product-item-body")}>
-               <h4 className={cx("product-item_name")}>{data?.name}</h4>
+               <h4 className={cx("product-item_name")}>{data?.name || "Example"}</h4>
 
                <div className={cx("product-item_tags")}>
                   {!!features &&
@@ -112,7 +112,8 @@ function ProductItem({ data, searchResultPage, preview }) {
                   </div>
 
                   <h1 className={cx("product-item_price--current")}>
-                     {moneyFormat(data?.cur_price) + "₫"}
+                     {data?.cur_price ? moneyFormat(data?.cur_price) : moneyFormat("12345")}
+                     ₫
                   </h1>
                </div>
             </div>

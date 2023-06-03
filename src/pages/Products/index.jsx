@@ -56,7 +56,7 @@ function Product() {
       });
    };
 
-   console.log("product re-render", store);
+   // console.log("product re-render", store);
 
    return (
       <div className={cx("product-container")}>

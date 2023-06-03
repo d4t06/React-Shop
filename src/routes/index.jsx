@@ -6,9 +6,11 @@ import Login from "../pages/Login";
 import Register from '../pages/Register'
 import Unauthorized from '../pages/UnauthorizedPage';
 import Dashboard from '../pages/Dashboard/Home';
-import DashboardLayout from '../layouts/DashboardLayout';
 import AddProduct from '../pages/Dashboard/AddProduct';
 import EditProduct from '../pages/Dashboard/EditProduct'
+
+import DashboardLayout from '../layouts/DashboardLayout';
+import AuthLayout from '../layouts/AuthLayout';
 
 const publicRoutes = [
    {
@@ -22,10 +24,12 @@ const publicRoutes = [
    {
       path: "/login",
       component: Login,
+      layout: AuthLayout
    },
    {
       path: "/register",
       component: Register,
+      layout: AuthLayout
    },
    {
       path: "/:category",

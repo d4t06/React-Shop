@@ -93,10 +93,9 @@ function Register() {
 
    // console.log(prevUser.current === user);
    return (
-      <div className="wrap">
          <form className={cx("form")} onSubmit={handleSubmit}>
             {errMsg && <h2 className={cx("error-msg")}>{errMsg}</h2>}
-            <h1>Đăng ký</h1>
+            <h1 className={cx("title")}>Đăng ký</h1>
             <div className={cx("form-group")}>
                <label htmlFor="username" autoComplete="off">
                   Tên tài khoản
@@ -196,7 +195,7 @@ function Register() {
          </div> */}
             <button
                className={cx(
-                  "login-form-btn",
+                  "submit-btn",
                   !validName ||
                      !validPwd ||
                      !validMatchPwg ||
@@ -216,7 +215,6 @@ function Register() {
                </Link>
             </span>
          </form>
-      </div>
    );
 }
 export default Register;

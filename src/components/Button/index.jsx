@@ -5,6 +5,7 @@ const cx = classNames.bind(styles);
 
 function Button({
    mgauto,
+   disable,
    full,
    half,
    describe,
@@ -15,10 +16,12 @@ function Button({
    fill,
    onClick,
    icon,
-   status
+   status,
+   className,
 }) {
    const classes = cx('wrapper', {
-      disable: count === 0,
+      [className]: className,
+      disable,
       outline,
       mgauto,
       fill,

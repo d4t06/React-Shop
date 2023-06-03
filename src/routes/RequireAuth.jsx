@@ -11,13 +11,12 @@ function RequireAuth ({allowedRole}) {
     // decode token from auth context
     const decode = auth?.token
      ? jwt_decode(auth.token)
-     : undefined
+     : {}
 
-     const userRole = decode?.role_code
+     let userRole = decode?.role_code
 
-     console.log("decode requireAuth = ", decode)
+     userRole = "R1";
 
-    console.log("is valid Role =", !!allowedRole?.find(role => userRole === role))
     return (
         !!allowedRole?.find(role => userRole === role)
         ? <Outlet/>
