@@ -12,7 +12,7 @@ function Header({ less }) {
 
 
   if (!less) {
-    //  decode = jwtDecode(auth.token);
+     decode = auth.token ? jwtDecode(auth.token) : '';
   }
 
   return (
@@ -26,7 +26,7 @@ function Header({ less }) {
               <h1>
                 <Link to="/dashboard">HD SHOP</Link>
               </h1>
-              {/* <h2>Hello {decode.username} !</h2> */}
+              <h2>Hello {decode?.username ? decode.username : "no persist"} !</h2>
             </>
           )}
         </div>

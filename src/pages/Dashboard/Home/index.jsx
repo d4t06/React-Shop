@@ -60,7 +60,7 @@ function AdminPage() {
         navigate("/unauthorized");
       }
     };
-    // fetch();
+    fetch();
 
     return () => {
       isMounted = false;

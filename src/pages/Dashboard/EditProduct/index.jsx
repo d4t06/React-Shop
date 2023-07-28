@@ -50,7 +50,7 @@ function EditProduct() {
 
   const handleImage = (e) => {
     const file = e.target.files[0];
-    handleInput("iamge", file);
+    handleInput("image", file);
   }
 
   const handleFeaturesToArr = (productInfo) => {
