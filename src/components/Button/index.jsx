@@ -1,6 +1,5 @@
 import classNames from 'classnames/bind';
 import styles from './Button.module.scss';
-import { Link } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 function Button({
@@ -16,7 +15,6 @@ function Button({
    fill,
    onClick,
    icon,
-   status,
    className,
 }) {
    const classes = cx('wrapper', {
@@ -33,7 +31,6 @@ function Button({
    });
    return (
       <button onClick={onClick} className={classes}>
-         { !!(status === 'loading') && icon}
          <span>
             {children} {count} {describe}
          </span>

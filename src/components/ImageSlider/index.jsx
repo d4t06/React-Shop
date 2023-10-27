@@ -1,224 +1,177 @@
 import classNames from "classnames/bind";
 import { useEffect, useRef, useState } from "react";
 import styles from "./ImageSlider.module.scss";
+import useSlider from "@/hooks/useSlider";
 
 const cx = classNames.bind(styles);
 
 function ImageSlider({ banner, data }) {
-  // need to update ui => useState
-  const [isDrag, setIsDrag] = useState(false);
-  const [curIndex, setCurIndex] = useState(1);
-  const [isEnter, setIsEnter] = useState(false);
-  const imageSliderRef = useRef();
+   const [isDrag, setIsDrag] = useState(false);
+   const [curIndex, setCurIndex] = useState(1);
+   const [isEnter, setIsEnter] = useState(false);
 
-  const indexRef = useRef(1);
-  const scrollRef = useRef(0);
-  const prevScrollRef = useRef(0);
-  const prevPageXRef = useRef(0);
+   const imageSliderRef = useRef();
+   const scrollRef = useRef(0);
+   const prevPageXRef = useRef(0);
 
-  useEffect(() => {
-    // console.log("set Index useEffect")
-    if (curIndex === 1) return;
-    scrollRef.current = 0;
-    indexRef.current = 1;
-    setCurIndex(1);
-  }, [data]);
+   // use hooks
+   const { imageWidth, images, maxScroll, prevScrollRef } = useSlider({
+      imageSliderRef,
+      data,
+      curIndex,
+      isEnter,
+   });
 
-  const imageWidth = banner ? 1100 : 625;
-  // phải để sau useEffet vì mỗi khi re-render thì data khong bị thay đổi
-  data = data.slice(0, data.length - 5).split("*and*");
+   const handleStartDrag = (e) => {
+      e.preventDefault();
 
-  const maxScroll = imageWidth * (data.length - 1);
+      const isFinish = checkIsScrollFinish();
+      if (!isFinish) return;
 
-  useEffect(() => {
-    // console.log("isEnter = ", isEnter);
-    if (isEnter) return;
-    const id = setInterval(() => {
-      // console.log('useEffect auto slide');
-      nextImage();
-    }, 10000);
+      setIsDrag(true);
 
-    return () => clearInterval(id);
-  }, [isEnter]);
+      prevPageXRef.current = e.pageX;
+      imageSliderRef.current.style.scrollBehavior = "auto";
+   };
 
-  useEffect(() => {
+   const getNewIndex = () => {
+      let newIndex = curIndex;
+      const distance = scrollRef.current - prevScrollRef.current;
+      const minimum = imageWidth / 4;
 
-   //   if  (prevScrollRef.current === scrollRef.current) return
-    //  console.log("useEffect fix scroll");
-    imageSliderRef.current.scrollLeft = scrollRef.current;
+      console.log("check distance", distance);
 
-    // cap nhap lại prevScroll -> prev chậm hơn curScroll
-    prevScrollRef.current = scrollRef.current;
-  }, [scrollRef.current]);
-
-  const handleStartDrag = (e) => {
-    e.preventDefault();
-
-    setIsDrag(true);
-
-    prevPageXRef.current = e.pageX;
-    imageSliderRef.current.style.scrollBehavior = "auto";
-  };
-
-  const fixScroll = () => {
-    if (scrollRef.current <= 0) return 0;
-
-    let i = 0;
-    while (i < 10) {
-      if (
-        scrollRef.current >= i * imageWidth &&
-        scrollRef.current <= (i + 1) * imageWidth
-      ) {
-        const distance = scrollRef.current - prevScrollRef.current;
-
-        // nếu điều khiển bằng nút
-        if (distance === 0) return scrollRef.current;
-
-        // scroll to the left
-        if (distance > 0) {
-          if (Math.abs(distance) > imageWidth / 4)
-            return imageWidth * (i + 1); // ke tiep
-          else return imageWidth * i;
-        }
-        // scroll to the right
-        if (distance < 0) {
-          if (Math.abs(distance) > imageWidth / 4)
-            return imageWidth * i; // truoc do
-          else return imageWidth * (i + 1);
-        }
+      if (distance > 0) {
+         if (newIndex === images.length) newIndex -= 1;
+         else if (Math.abs(distance) > minimum) newIndex += 1;
+      } else if (distance < 0) {
+         if (newIndex === 1) newIndex += 1;
+         else if (Math.abs(distance) > minimum) newIndex -= 1;
       }
 
-      i++;
-    }
-  };
+      return newIndex;
+   };
 
-  const handleMouseLeave = () => {
-    // console.log("handleMouseLeave");
-    setIsEnter(false);
-    if (isDrag) handleStopDrag();
-  };
+   const handleMouseLeave = () => {
+      setIsEnter(false);
+      if (isDrag) handleStopDrag();
+   };
 
-  const handleDrag = (e) => {
-    //onMouseMove
-    // khi mouseDown mới scroll, nếu mouseMove sẽ không scroll được
-    if (!isDrag) return;
+   const handleDrag = (e) => {
+      if (!isDrag) return;
 
-    setIsDrag(true);
+      setIsDrag(true);
+      const distance = e.pageX - prevPageXRef.current;
+      let newScroll = prevScrollRef.current - distance;
 
-    const distance = e.pageX - prevPageXRef.current; // khoang cach scroll
+      const isValid = newScroll > 0 && newScroll < maxScroll;
 
-    let newScroll = prevScrollRef.current - distance;
+      if (isValid) {
+         imageSliderRef.current.scrollLeft = newScroll;
+         scrollRef.current = newScroll;
+      }
+   };
 
-    const isInValid = newScroll < 0 || newScroll > maxScroll; // Nếu scroll ở hình đầu và hình cuối
+   const handleStopDrag = () => {
+      if (!isDrag) return;
+      setIsDrag(false);
 
-    if (!isInValid) {
-      imageSliderRef.current.scrollLeft = newScroll;
-      scrollRef.current = newScroll;
-    }
+      if (scrollRef.current === prevScrollRef.current) return;
+      if (scrollRef.current === 0 || scrollRef.current === maxScroll) return;
 
-    // console.log("e.clientX = ", e.clientX);
-    // if (e.clientX >= 1200 || e.clientX <= 100) {
-    //   handleMouseLeave(e);
-    // }
-  };
+      const sliderEle = imageSliderRef.current;
+      sliderEle.style.scrollBehavior = "smooth";
 
-  const handleStopDrag = () => {
-   setIsDrag(false);
+      const newIndex = getNewIndex();
+      if (newIndex === curIndex) {
+         sliderEle.scrollLeft = prevScrollRef.current;
+      } else {
+         setCurIndex(newIndex);
+      }
 
-    imageSliderRef.current.style.scrollBehavior = "smooth";
-   // console.log(prevScrollRef.current, scrollRef.current);
+      scrollRef.current = 0;
+   };
 
+   const checkIsScrollFinish = () => {
+      const sliderEle = imageSliderRef.current;
+      const expectScroll = (curIndex - 1) * imageWidth;
 
-    if (scrollRef.current === prevScrollRef.current) return;
-    if (scrollRef.current === 0 || scrollRef.current === maxScroll) return;
+      return Math.ceil(sliderEle.scrollLeft) === Math.ceil(expectScroll);
+   };
 
-    // auto slide
-    const fixedNumber = fixScroll();
-    scrollRef.current = fixedNumber;
+   const nextImage = () => {
+      const sliderEle = imageSliderRef.current;
+      sliderEle.style.scrollBehavior = "smooth";
 
-    // update index -> re-render
-    indexRef.current = fixedNumber / 1100 + 1;
-    setCurIndex(indexRef.current);
-    console.log("handleStopDrag", fixedNumber);
-  };
+      const isFinish = checkIsScrollFinish();
+      if (!isFinish) return;
 
-  const nextImage = () => {
-    if (indexRef.current === data.length) {
-      indexRef.current = 1;
-      setCurIndex(indexRef.current);
-    } else {
-      indexRef.current += 1;
-      setCurIndex(indexRef.current);
-    }
+      if (curIndex === images.length) {
+         setCurIndex(1);
+      } else {
+         setCurIndex((prev) => prev + 1);
+      }
+   };
 
-    // auto slide
-    const fixedNumber = fixScroll();
-    fixedNumber === maxScroll
-      ? (scrollRef.current = 0)
-      : (scrollRef.current = fixedNumber + imageWidth);
-  };
+   const previousImage = () => {
+      const sliderEle = imageSliderRef.current;
+      sliderEle.style.scrollBehavior = "smooth";
 
-  const previousImage = () => {
-    if (indexRef.current === 1) {
-      indexRef.current = data.length;
-      setCurIndex(indexRef.current);
-    } else {
-      indexRef.current -= 1;
-      setCurIndex(indexRef.current);
-    }
+      const isFinish = checkIsScrollFinish();
+      if (!isFinish) return;
 
-    // auto slide
-    const fixedNumber = fixScroll();
-   fixedNumber === 0
-      ? (scrollRef.current = maxScroll)
-      : (scrollRef.current = fixedNumber - imageWidth);
-  };
+      if (curIndex === 1) {
+         setCurIndex(images.length);
+      } else {
+         setCurIndex((prev) => prev - 1);
+      }
+   };
 
-  const classes = cx("image-slider", {
-    banner,
-  });
+   const classes = cx("image-slider", {
+      banner,
+   });
 
-  // console.log("image slider re-render");
-
-  return (
-    <div
-      className={cx("image-slider-frame")}
-      onMouseDown={(e) => handleStartDrag(e)}
-      onMouseUp={(e) => handleStopDrag(e)}
-      onMouseMove={(e) => handleDrag(e)}
-      onMouseEnter={() => setIsEnter(true)}
-      onMouseLeave={() => handleMouseLeave()}
-    >
-      <div className={classes} ref={imageSliderRef}>
-        <div
-          className={cx("left-arrow", "slider-control")}
-          onClick={() => previousImage()}
-        >
-          <i className="fa-solid fa-chevron-left"></i>
-        </div>
-        <div
-          className={cx("right-arrow", "slider-control")}
-          onClick={() => nextImage()}
-        >
-          <i className="fa-solid fa-chevron-right"></i>
-        </div>
-        <div className={cx("slider-index")}>
-          <span>{curIndex}</span> / <span>{data.length}</span>
-        </div>
-        {Array.isArray(data) ? (
-          data.map((item, index) => {
-            return (
-              <div key={index} className={cx("slider-item")}>
-                <img src={item} alt="" />
-              </div>
-            );
-          })
-        ) : (
-          <h2>Data is not array</h2>
-        )}
+   return (
+      <div
+         className={cx("image-slider-frame")}
+         onMouseDown={(e) => handleStartDrag(e)}
+         onMouseUp={(e) => handleStopDrag(e)}
+         onMouseMove={(e) => handleDrag(e)}
+         onMouseEnter={() => setIsEnter(true)}
+         onMouseLeave={() => handleMouseLeave()}
+      >
+         <div className={classes} ref={imageSliderRef}>
+            <div
+               className={cx("left-arrow", "slider-control")}
+               onMouseDown={(e) => e.stopPropagation()}
+               onClick={previousImage}
+            >
+               <i className="fa-solid fa-chevron-left"></i>
+            </div>
+            <div
+               className={cx("right-arrow", "slider-control")}
+               onMouseDown={(e) => e.stopPropagation()}
+               onClick={nextImage}
+            >
+               <i className="fa-solid fa-chevron-right"></i>
+            </div>
+            <div className={cx("slider-index")}>
+               <span>{curIndex}</span> / <span>{images.length}</span>
+            </div>
+            {images.length ? (
+               images.map((item, index) => {
+                  return (
+                     <div key={index} className={cx("slider-item")}>
+                        <img src={item} alt="" />
+                     </div>
+                  );
+               })
+            ) : (
+               <h2>Data is not array</h2>
+            )}
+         </div>
       </div>
-    </div>
-  );
+   );
 }
 
 export default ImageSlider;

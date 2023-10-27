@@ -1,109 +1,71 @@
-import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 
-import { fetchProducts } from '../../store/productsSlice';
-import { selectedAllFilter, storingFilters } from '../../store/filtersSlice';
-// import useFilter from '../../hooks/useFilters';
+import { fetchProducts, selectedAllProduct } from "../../store/productsSlice";
+import { selectedAllFilter, storingFilters } from "../../store/filtersSlice";
 
-import classNames from 'classnames/bind';
-import styles from './ProductFilter.module.scss';
+import classNames from "classnames/bind";
+import styles from "./ProductFilter.module.scss";
 
-import Checkbox from './sections/Checkbox';
-import Radiobox from './sections/Radiobox';
+import Checkbox from "./sections/Checkbox";
+import Radiobox from "./sections/Radiobox";
 
-import { brand, price } from '../../assets/data';
-// import { getAll } from '../../store/actions';
-// import { useParams } from 'react-router-dom';
+import { brand, price } from "../../assets/data";
 
 const cx = classNames.bind(styles);
 
-function ProductFilter({ category, disable }) {
-   const filtersStore = useSelector(selectedAllFilter);
-   const dispatchRedux = useDispatch();
-   const [Filters, setFilters] =  useState('');
-   // const category = useParams()
-   // const [filters, handleFilter] = useFilter();
+function ProductFilter({ category }) {
+   const dispatch = useDispatch();
+   const { sort, filters: filtersInStore } = useSelector(selectedAllFilter);
+   const { status } = useSelector(selectedAllProduct);
 
    const showFilteredResults = (filters) => {
-
-      console.log('show filter result');
-      const { sort } = filtersStore;
-      // getAll(dispatchRedux, { page: 1, sort, category, filters: filters });
-      dispatchRedux(fetchProducts({page: 1, sort, category, filters: filters}))
-      
-      dispatchRedux(storingFilters({sort, filters: filters}))
+      dispatch(fetchProducts({ page: 1, sort, category, filters }));
    };
-
-   // useEffect(() => {
-   //    showFilteredResults(filters)
-   // }, [filters])
-
 
    const handleFilter = (filters, by) => {
-      let newFilters = { ...Filters };
-      // console.log("old product filters = ", newFilters)
-      // console.log('product filter = ', filters, by);
+      let newFilters = { ...filtersInStore };
 
-      // nếu chọn tất cả
-      if (!filters) {
-         delete newFilters[by];
-      } else {
-         newFilters[by] = filters;
-      }
+      // if select all
+      // if (!filters) {
+      //    newFilters[by] = [];
+      // } else {
+      // }
+      newFilters[by] = filters;
 
-      // nếu không có filter gì cả
-      if (!newFilters.price && !newFilters.brand) newFilters = '';
-
-      // console.log("new product filters = ", newFilters)
+      // >>> api
       showFilteredResults(newFilters);
-      setFilters(newFilters);
+      // >>> local
+      dispatch(storingFilters({ sort, filters: newFilters }));
    };
 
-   // khong can update o day
-    useEffect(() => {
-     // if (!Filters) return
-   //   console.log("useEffect update productfilter global");
-     setFilters(filtersStore.filters)
-    }, [filtersStore])
-
-   //  useEffect(() => {
-   //   // if (!Filters) return
-   //   console.log("useEffect update productfilter global");
-   //  }, [store])
-
    return (
-      <div className={cx('col', 'col-3')}>
-         <div className={cx('product-filter', {disable})}>
-            <div className={cx('filter-section')}>
-               <h1 className={cx('filter-title')}>Hãng sản xuất</h1>
-               <div className={cx('filter-list')}>
-                  {/* {filterContiments.brand.map((item, index) => {}) */}
-                  {/* phai render data lay ra tu checkbox component */}
-                  {/* tại vì mỗi checkbook có một state riêng, state lấy dữ liệu từ nhiều item, nhưng không thể render nhiều checkbox */}
-                  {/* ban đầu render nhiều checkbox */}
-                  {/* fix: chỉ có mỗi checkbox nhưng trong checkbox có nhiều item */}
+      <div className={cx("col", "col-3")}>
+         <div className={cx("product-filter", { disable: status === "loading" })}>
+            <div className={cx("filter-section")}>
+               <h1 className={cx("filter-title")}>Hãng sản xuất</h1>
+               <div className={cx("filter-list")}>
+                  {/* phai render data lay ra tu checkbox component
+                  tại vì mỗi checkbook có một state riêng, state lấy dữ liệu từ nhiều item, nhưng không thể render nhiều checkbox
+                  ban đầu render nhiều checkbox
+                  fix: chỉ có mỗi checkbox nhưng trong checkbox có nhiều item */}
                   <Checkbox
+                     filters={filtersInStore}
                      data={brand[category]}
-                     handleFilter={(filters) => handleFilter(filters, 'brand')}
+                     handleFilter={(filters) => handleFilter(filters, "brand")}
                   />
                   {/* truyền handleFilter vào cop Checkbox, chực hiện sau trể về đối số là filter sau đó tt*/}
                </div>
             </div>
-            <div className={cx('filter-section')}>
-               <h1 className={cx('filter-title')}>Mức giá</h1>
-               <div className={cx('filter-list', 'price')}>
+            <div className={cx("filter-section")}>
+               <h1 className={cx("filter-title")}>Mức giá</h1>
+               <div className={cx("filter-list", "price")}>
                   <Radiobox
+                     filters={filtersInStore}
                      data={price[category]}
-                     handleFilter={(filter) => handleFilter(filter, 'price')}
+                     handleFilter={(filter) => handleFilter(filter, "price")}
                   />
                </div>
             </div>
-            {/* <div className={ cx('filter-section') }>
-            <h2 className={ cx('filter-title') }>Tính năng đặc biệt</h2>
-            <div className={ cx('filter-list') }>
-              <Checkbox handleFilter={ (filter) => handleFilter(filter, 'feature') } by={'feature'} category={ "feature" } />
-            </div>
-          </div> */}
          </div>
       </div>
    );

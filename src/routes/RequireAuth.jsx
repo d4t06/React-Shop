@@ -1,7 +1,7 @@
 import { useLocation, Navigate, Outlet } from "react-router-dom"
 import jwt_decode from "jwt-decode";
 
-import useAuth from "../hooks/useAuth"
+import {useAuth} from "@/store"
 
 
 function RequireAuth ({allowedRole}) {

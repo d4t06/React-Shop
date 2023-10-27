@@ -131,3 +131,8 @@
 - Thêm ảnh và xóa ảnh
 - Dùng protal render Modal ra ngoài cùng
 
+
+### update thứ 5 26/10/2023
+- Chỉnh sủa toàn project
+- VITE_VAR, import.meta.env.VAR
+

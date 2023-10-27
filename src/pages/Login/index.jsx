@@ -2,7 +2,7 @@ import classNames from 'classnames/bind';
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styles from './Login.module.scss';
-import useAuth from '../../hooks/useAuth';
+import {useAuth} from '@/store';
 import request from '../../utils/request';
 // hooks
 import useInput from '../../hooks/useInput';

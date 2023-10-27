@@ -1,24 +1,35 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    filters: '',
-    sort: '',
-}
+   filters: {
+      brand: [],
+      price: [],
+   },
+   sort: {
+      column: "",
+      type: "",
+   },
+};
 
 const filtersSlice = createSlice({
-    name: "filters",
-    initialState,
-    reducers: {
-        storingFilters(state, action) {
-            state.filters= action.payload.filters || '';
-            state.sort= action.payload.sort || '';
-        }
-    },
-    
-})
+   name: "filters",
+   initialState,
+   reducers: {
+      storingFilters(state, action) {
+         const payload = action.payload;
+         console.log('storing filter check payload', payload);
 
-export const selectedAllFilter = (state) => state.filters
+         state.filters = payload.filters || "";
+         state.sort = payload.sort || "";
+      },
+   },
+});
 
-export const { storingFilters } = filtersSlice.actions
+export const selectedAllFilter = (state) => {
+   const { filters, sort } = state.filters;
+   return { filters, sort };
+};
 
-export default filtersSlice.reducer
+export const { storingFilters } = filtersSlice.actions;
+
+export default filtersSlice.reducer;

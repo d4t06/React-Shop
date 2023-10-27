@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import jwtDecode from "jwt-decode";
-import useAuth from "../../../hooks/useAuth";
+import {useAuth} from "@/store";
 import classNames from "classnames/bind";
 import styles from "./Header.module.scss";
 

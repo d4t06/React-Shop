@@ -1,104 +1,123 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import * as productServices from '../services/productServices'
+import * as productServices from "../services/productServices";
 import searchService from "../services/searchService";
+import { useSelector } from "react-redux";
+import { sleep } from "../utils/appHelper";
 
 const initialState = {
-    status: 'idle',
-    // products: {rows: '', count: 0, pageSize},
-    products: {},
-    category: '',
-    page: 1,
-}
+   status: "idle",
+   productState: {
+      products: [],
+      count: 0,
+      pageSize: 0,
+   },
+   category: "",
+   page: 1,
+};
 
-// product.rows = 
-export const fetchProducts = createAsyncThunk('/products/fetchProducts', async(query) => {
-    try {
-        let response;
-        if (query.category.includes("search")) {
-            console.log('include search')
-            const key = query.category.split('search=')[1]; //search=iphone 14
-             response = await searchService({ q: key, page: query.page, sort: query.sort });
-        }
-        else {
-             response = await productServices.getProducts(query);
-        }
-        return {products: response, ...query};
-    } catch (error) {
-        console.log("fetchProducts error", error)
-    }
-})
+export const fetchProducts = createAsyncThunk("/products/fetchProducts", async (query) => {
+   try {
+      let response;
+      if (query.category.includes("search")) {
+         console.log("include search");
+         const key = query.category.split("search=")[1]; //search=iphone 14
+         response = await searchService({ q: key, page: query.page, sort: query.sort.column ? query.sort : [] });
+      } else {
+         response = await productServices.getProducts({...query, sort: query.sort.column ? query.sort : [] });
+      }
+      // await sleep(1000);
 
+      return { productState: response, ...query };
+   } catch (error) {
+      console.log("fetchProducts error", error);
+   }
+});
 
 // product.rows.push
-export const getMoreProducts = createAsyncThunk('/products/getMoreProducts', async(query) => {
-    try {
-        let response;
-        if (query.category.includes("search")) {
-            console.log('include search')
-            const key = query.category.split('search=')[1]; //search=iphone 14
-             response = await searchService({ q: key, page: query.page, sort: query.sort });
-        }
-        else {
-            response = await productServices.getProducts(query);
-        }
-        return {products:response, ...query}
-    } catch (error) {
-        console.log("fetchProducts error", error)
-    }
-})
+export const getMoreProducts = createAsyncThunk("/products/getMoreProducts", async (query) => {
+   try {
+      let response;
+      if (query.category.includes("search")) {
+         console.log("include search");
+         const key = query.category.split("search=")[1]; //search=iphone 14
+         response = await searchService({ q: key, page: query.page, sort: query.sort });
+      } else {
+         response = await productServices.getProducts(query);
+         //  console.log("check res", response);
+      }
+      // await sleep(1000);
+
+      return { productState: response, ...query };
+   } catch (error) {
+      console.log("fetchProducts error", error);
+   }
+});
 
 const productsSlice = createSlice({
-    name: "products",
-    initialState,
-    reducers: {
-        storingProducts(state, action)  {
-            state.products.count= action.payload.products.count;
-            state.products.rows.push(...action.payload.products.rows);
+   name: "products",
+   initialState,
+   reducers: {
+      storingProducts(state, action) {
+         const payload = action.payload;
 
-            state.status = 'successful'    
-            state.page= action.payload.page;
-            state.category= action.payload.category || '';    
-        },
-    },
-    extraReducers: (builder) => {
-        builder
-            // fetchProducts
-            .addCase(fetchProducts.pending, (state, action) => {
-                state.status = 'loading'
-            }) 
-            .addCase(fetchProducts.fulfilled, (state, action) => {
-                // console.log("fetchProducts =", action);
-                    state.products = action.payload.products
+         state.productState.count = payload.productState.count || state.productState.count;
+         state.productState.products.push(...payload.productState.products);
 
-                    state.status = 'successful'    
-                    state.page= action.payload.page || 1;
-                    state.category= action.payload.category || '';            
-            })
-            .addCase(fetchProducts.rejected, (state, action) => {
-                state.status = 'error'
-            })
+         state.status = "successful";
+         state.page = payload.page;
+         state.category = payload.category || "";
+      },
+   },
+   extraReducers: (builder) => {
+      builder
+         // fetchProducts
+         .addCase(fetchProducts.pending, (state, action) => {
+            state.status = "loading";
+         })
+         .addCase(fetchProducts.fulfilled, (state, action) => {
+            const payload = action.payload;
 
-            // getMoreProducts
-            .addCase(getMoreProducts.pending, (state, action) => {
-                state.status = 'loading'
-            })
-            .addCase(getMoreProducts.fulfilled, (state, action) => {
-                console.log("getMoreProducts =", action)
-                state.products.count= action.payload.products.count;
-                state.products.rows.push(...action.payload.products.rows);
+            state.status = "successful";
+            state.page = payload.page || 1;
+            state.category = payload.category || "";
+            state.productState = payload.productState || state.productState;
+         })
+         .addCase(fetchProducts.rejected, (state, action) => {
+            state.status = "error";
+         })
 
-                state.status = 'successful'    
-                state.page= action.payload.page;
-                state.category= action.payload.category || '';    
-            })
-            .addCase(getMoreProducts.rejected, (state, action) => {
-                state.status = 'error'
-            })
-    }
-})
+         // getMoreProducts
+         .addCase(getMoreProducts.pending, (state, action) => {
+            state.status = "more-loading";
+         })
+         .addCase(getMoreProducts.fulfilled, (state, action) => {
+            console.log("getMoreProducts =", action);
+            const payload = action.payload;
 
-export const selectedAllStore = (state) => state.products
+            state.productState.count = payload.productState.count;
+            state.productState.products.push(...payload.productState.products);
 
-export const { storingProducts } = productsSlice.actions
+            state.status = "successful";
+            state.page = payload.page;
+            state.category = payload.category || "";
+         })
+         .addCase(getMoreProducts.rejected, (state, action) => {
+            state.status = "error";
+         });
+   },
+});
 
-export default productsSlice.reducer
+export const selectedAllProduct = (state) => {
+   const {
+      status,
+      productState: { products, pageSize, count },
+      category,
+      page,
+   } = state.products;
+
+   return { status, products, category, page, count, pageSize };
+};
+
+export const { storingProducts } = productsSlice.actions;
+
+export default productsSlice.reducer;

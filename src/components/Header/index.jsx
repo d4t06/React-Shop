@@ -1,11 +1,12 @@
 import { addIcon, gearIcon, headPhoneIcons, laptopIcon, mobileIcons } from '../../assets/icons';
 import jwtDecode from 'jwt-decode';
-import useAuth from '../../hooks/useAuth';
+import {useAuth} from '@/store';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Modal } from '../../components';
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
+import { routes } from '@/routes';
 
 const cx = classNames.bind(styles);
 
@@ -33,7 +34,7 @@ function Header() {
             </div>
             <div className={cx('header-top')}>
                <div className={cx('container', 'header-top-wrap')}>
-                  <Link className={cx('brand')} to="/">
+                  <Link className={cx('brand')} to={routes.HOME}>
                      HD Shop
                   </Link>
                   <Search setShowModal={setShowModal} />
@@ -60,19 +61,19 @@ function Header() {
                <div className={cx('container', 'header-nav-wrap')}>
                   <ul className={cx('nav-list')}>
                      <li className={cx('nav-item')}>
-                        <Link to={'/dtdd'}>
+                        <Link to={`${routes.HOME}/dtdd`}>
                            {mobileIcons}
                            <p className={cx('nav-text')}>Điện thoại</p>
                         </Link>
                      </li>
                      <li className={cx('nav-item')}>
-                        <Link to={'/laptop'}>
+                        <Link to={`${routes.HOME}/laptop`}>
                            {laptopIcon}
                            <p className={cx('nav-text')}>Laptop</p>
                         </Link>
                      </li>
                      <li className={cx('nav-item')}>
-                        <Link to={'/laptop'}>
+                        <Link to={`${routes.HOME}/laptop`}>
                            {headPhoneIcons}
                            <p className={cx('nav-text')}>Phụ kiện</p>
                         </Link>
@@ -81,12 +82,12 @@ function Header() {
                   {!decode?.username && (
                      <ul className={cx('nav-list', 'left-nav-list')}>
                         <li className={cx('nav-item')}>
-                           <Link to={'/login'}>
+                           <Link to={routes.LOGIN}>
                               <p className={cx('nav-text')}>Đăng nhập</p>
                            </Link>
                         </li>
                         <li className={cx('nav-item')}>
-                           <Link to={'/register'}>
+                           <Link to={routes.REGISTER}>
                               <p className={cx('nav-text')}>Đăng Ký</p>
                            </Link>
                         </li>

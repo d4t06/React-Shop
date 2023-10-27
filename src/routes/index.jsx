@@ -1,75 +1,86 @@
-import SearchResultPage from '../pages/SearchResultPage'
-import Home from "../pages/Home";
-import DetailPage from "../pages/DetailPage";
-import Products from "../pages/Products";
-import Login from "../pages/Login";
-import Register from '../pages/Register'
-import Unauthorized from '../pages/UnauthorizedPage';
-import Dashboard from '../pages/Dashboard/Home';
-import AddProduct from '../pages/Dashboard/AddProduct';
-import EditProduct from '../pages/Dashboard/EditProduct'
+import {
+   Products,
+   AddProduct,
+   Dashboard,
+   EditProduct,
+   Home,
+   Login,
+   Register,
+   SearchResultPage,
+   UnauthorizedPage,
+   ProductDetail,
+} from "../pages";
 
-import DashboardLayout from '../layouts/DashboardLayout';
-import AuthLayout from '../layouts/AuthLayout';
+import DashboardLayout from "../layouts/DashboardLayout";
+import AuthLayout from "../layouts/AuthLayout";
+
+const routes = {
+   HOME: "/React-Shop",
+   CATEGORY: "/React-Shop/:category",
+   LOGIN: "/React-Shop/login",
+   REGISTER: "/React-Shop/register",
+   SEARCH: "/React-Shop/search/:key",
+   DETAIL: "/React-Shop/:category/:key",
+   UNAUTHORIZED: "/React-Shop/unauthorized",
+};
 
 const publicRoutes = [
    {
-      path: "/",
+      path: routes.HOME,
       component: Home,
    },
    {
-      path: "/unauthorized",
-      component: Unauthorized,
+      path: routes.UNAUTHORIZED,
+      component: UnauthorizedPage,
    },
    {
-      path: "/login",
+      path: routes.LOGIN,
       component: Login,
-      layout: AuthLayout
+      layout: AuthLayout,
    },
    {
-      path: "/register",
+      path: routes.REGISTER,
       component: Register,
-      layout: AuthLayout
+      layout: AuthLayout,
    },
    {
-      path: "/:category",
+      path: routes.CATEGORY,
       component: Products,
    },
    {
-      path: "/search/:key",
+      path: routes.SEARCH,
       component: SearchResultPage,
    },
    {
-      path: "/:category/:key",
-      component: DetailPage,
-   }
+      path: routes.DETAIL,
+      component: ProductDetail,
+   },
 ];
-
 
 const privateRoutes = [
    {
-      path:"/dashboard",
+      path: "/React-Shop/dashboard",
       role: ["R1"],
       component: Dashboard,
-      layout: DashboardLayout
+      layout: DashboardLayout,
    },
    {
-      path:"/dashboard/add",
+      path: "/React-Shop/dashboard/add",
       role: ["R1"],
       component: AddProduct,
-      layout: DashboardLayout
+      layout: DashboardLayout,
    },
    {
-      path:"/dashboard/:category",
+      path: "/React-Shop/dashboard/:category",
       role: ["R1"],
       component: Dashboard,
-      layout: DashboardLayout
+      layout: DashboardLayout,
    },
    {
-      path:"/dashboard/products/edit/:href",
+      path: "/React-Shop/dashboard/products/edit/:href",
       role: ["R1"],
       component: EditProduct,
-      layout: DashboardLayout
+      layout: DashboardLayout,
    },
-]
-export { publicRoutes, privateRoutes };
+];
+export { publicRoutes, privateRoutes, routes };

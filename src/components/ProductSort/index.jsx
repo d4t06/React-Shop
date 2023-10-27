@@ -6,7 +6,7 @@ import classNames from 'classnames/bind';
 import styles from './ProductSort.module.scss';
 
 // import { getAll, getSearchPage } from '../../store/actions';
-import { fetchProducts } from '../../store/productsSlice';
+import { fetchProducts, selectedAllProduct } from '../../store/productsSlice';
 const cx = classNames.bind(styles);
 
 const continents = [
@@ -36,12 +36,11 @@ const continents = [
    },
 ];
 
-function ProductSort({ category, disable }) {
-   const filtersStore = useSelector(selectedAllFilter);
+function ProductSort() {
    const dispatchRedux = useDispatch();
+   const {filters} = useSelector(selectedAllFilter);
+   const {status,  category} = useSelector(selectedAllProduct)
    const [checked, setChecked] = useState(1);
-
-   const { filters } = filtersStore;
 
    useEffect(() => {
       if (checked === 1) return;
@@ -61,6 +60,7 @@ function ProductSort({ category, disable }) {
          dispatchRedux(
             fetchProducts({ page: 1, category, filters, sort: newSort })
          );
+
          dispatchRedux(storingFilters({ filters, sort: newSort }));
 
          setChecked(id);
@@ -76,9 +76,9 @@ function ProductSort({ category, disable }) {
    };
 
    return (
-      <div className={cx('product-sort', {disable})}>
+      <div className={cx('product-sort')}>
          <h1>Xem theo</h1>
-         <ul className={cx('btn-group')}>
+         <ul className={cx('btn-group', {disable: status === 'loading'})}>
             {continents.map((item, index) => {
                return (
                   <li

@@ -18,10 +18,15 @@
     border: none;
     
  }
+
+ .btn {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+ }
  .search-btn {
     position: absolute;
     right: 0;
-    top: 5px;
     bottom: 5px;
     width: 45px;
     color: #999;
@@ -39,15 +44,15 @@
  }
  .clear-btn, .loading-btn {
     position: absolute;
-    height: 100%;
     right: 60px;
+    height: 100%;
     background-color: transparent;
-    top: 3px;
-    color: #ccc;
+    top: 0;
+    color: #666;
     font-size: 1.8rem;
  }
- .loading-btn{
-    animation: spinner 2s linear infinite;
+ .loading-btn i{
+    animation: spinner 1s linear infinite;
  }
 
  @keyframes spinner {

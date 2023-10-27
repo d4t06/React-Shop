@@ -1,5 +1,5 @@
 import request from "../utils/request";
-import useAuth from "./useAuth";
+import {useAuth} from "../store";
 
 const useLogout = () => {
     const {setAuth} = useAuth()

@@ -1,10 +1,8 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-// custom hooks
-import useAuth from '../hooks/useAuth';
-import useRefreshToken from '../hooks/useRefreshToken';
-import useLocalStorage from '../hooks/useLocalStorage';
+import {useLocalStorage, useRefreshToken} from '@/hooks'
+import {useAuth} from '@/store'
 
 const PersistLogin = () => {
    const { auth } = useAuth();

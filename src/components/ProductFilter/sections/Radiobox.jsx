@@ -1,46 +1,31 @@
-import { useEffect, useState } from 'react';
-import classNames from 'classnames/bind';
-import styles from '../ProductFilter.module.scss';
-// import Continents from './Continents'
-// import useStore from '../../../hooks/useStore';
-import { useSelector } from 'react-redux';
-import { selectedAllFilter } from '../../../store/filtersSlice';
+import classNames from "classnames/bind";
+import styles from "../ProductFilter.module.scss";
 const cx = classNames.bind(styles);
 
-
-function Radiobox({ handleFilter, data }) {
-   const filtersStore = useSelector(selectedAllFilter)
-   // const [state, dispatch] = useStore()
-   const [checked, setChecked] = useState();
-
-   // console.log("checked radio = ", checked)
-
+export default function Radiobox({ handleFilter, data, filters }) {
+   
    const handleToggle = (array) => {
-      if (JSON.stringify(array) ===  JSON.stringify(checked)) return
-
-      // console.log("price value =", array)
-      // neu chon tat ca
+      if (JSON.stringify(array) === JSON.stringify(filters.price)) return;
       handleFilter(array);
-      setChecked(array)
    };
-
-   useEffect(() => {
-      setChecked(filtersStore.filters.price || '')
-   }, [filtersStore.filters])
 
    return (
       <>
          {data.map((item, index) => {
+            const isChecked =
+               JSON.stringify(filters.price) === JSON.stringify(item.array) ? true : false;
             return (
-               <div key={index} className={cx('filter-item')}>
-                  <a to={'/ddtd'}>
+               <div key={index} className={cx("filter-item")}>
+                  <a to={"/ddtd"}>
                      <input
                         type="radio"
                         id={item.text + index}
-                        checked={JSON.stringify(checked) === JSON.stringify(item.array) ? true : false}
+                        checked={isChecked}
                         onChange={(e) => handleToggle(item.array, e)}
                      />
-                     <label className={cx('label')} htmlFor={item.text + index}>{item.text}</label>
+                     <label className={cx("label")} htmlFor={item.text + index}>
+                        {item.text}
+                     </label>
                   </a>
                </div>
             );
@@ -48,5 +33,3 @@ function Radiobox({ handleFilter, data }) {
       </>
    );
 }
-
-export default Radiobox;

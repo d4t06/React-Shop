@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import privateRequest from "../utils/privateRequest"
-import useAuth from "./useAuth"
+import {useAuth} from "../store"
 import useRefreshToken from "./useRefreshToken"
 
 const usePrivateRequest = () => {

@@ -8,7 +8,7 @@ function DefaultLayout({ children, dispatch }) {
    return (
       <div className={cx("app")}>
          <Header dispatch={dispatch}/>
-         <div className="container">{children}</div>
+         <div className={cx('page-wrapper', 'container')}>{children}</div>
          <Footer />
       </div>
    );

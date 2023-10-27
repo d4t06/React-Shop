@@ -1,22 +1,20 @@
-import axios from "axios";
-
-const request = axios.create({
-   baseURL: "http://localhost:3000/api",
-});
+import request from "@/utils/request";
 
 export const getProducts = async (querys) => {
    // console.log("service querys", querys)
-   const {filters, sort, category, ...rest} = querys
-   
    if (!querys) {
       console.log("product service missing query");
       return []
    }
+
+   const {filters, sort, category, ...rest} = querys
    try {
       const response = await request.get(`/products/${category}`, {
          params: {
             ...rest,
-            ...filters, //brand='samsung,iphone'
+            // ...filters, //brand='samsung,iphone'
+            brand_name: filters.brand,
+            price: filters.price,
             ...sort //column=cur_price&type=asc
          }
       })
@@ -29,6 +27,7 @@ export const getProducts = async (querys) => {
 export const getProductDetail = async (querys) => {
    if (!querys) {
       console.log("product service missing query");
+      return;
    }
    const {category, href} = querys
    try {

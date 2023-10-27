@@ -1,62 +1,76 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useParams } from "react-router-dom";
 import classNames from "classnames/bind";
 import styles from "./Products.module.scss";
 import { useSelector, useDispatch } from "react-redux";
-import config from "../../config";
 import {
    ProductFilter,
    ImageSlider,
    ProductItem,
    QuickFilter,
    Button,
+   ProductSort,
 } from "../../components";
+import NoProduct from "./NoProduct";
 import { banner } from "../../assets/data";
 
-import {
-   fetchProducts,
-   selectedAllStore,
-   getMoreProducts,
-} from "../../store/productsSlice";
-import { selectedAllFilter } from "../../store/filtersSlice";
+import { fetchProducts, selectedAllProduct, getMoreProducts, selectedAllFilter } from "../../store";
+import ProductSkeleton from "../../components/Skeleton/ProductSkeleton";
 
-import NoProduct from "./NoProduct";
-import Skeleton from "./Skeleton";
-import ProductSort from "../../components/ProductSort";
 const cx = classNames.bind(styles);
 
-function Product() {
-   // products, status, page, category
-   const store = useSelector(selectedAllStore);
-   const filterStore = useSelector(selectedAllFilter);
+export default function Product() {
+   // use store
    const dispatchRedux = useDispatch();
+   const { count, page, pageSize, products, status } = useSelector(selectedAllProduct);
+   const { filters, sort } = useSelector(selectedAllFilter);
+
+   // ref
+   const firstTimeRender = useRef(true);
+   const prevCat = useRef("");
+
+   // use hooks
    const { category } = useParams();
-
-   const { products, page, status } = store;
-   const { sort, filters } = filterStore;
-   const { rows, count } = products || {};
-
-   let countProduct = count - page * config.pageSize;
-   if (countProduct < 0) countProduct = 0;
-
-   useEffect(() => {
-      dispatchRedux(fetchProducts({ category, page: 1 }));
-   }, [category]);
+   const remaining = useMemo(() => count - products.length, [products]);
 
    const handleGetMore = () => {
-      // getAll(dispatchRedux, {category, page: page + 1 });
-      dispatchRedux(
-         getMoreProducts({ category, sort, filters, page: page + 1 })
-      );
+      dispatchRedux(getMoreProducts({ category, sort, filters, page: page + 1 }));
    };
 
+   // <div className={cx("col", searchResultPage ? "col-3" : preview ? "col-9" : "col-4")}>
+   //    <ProductItem key={product.name} data={product} />;
+   // </div>;
+
    const renderProducts = () => {
-      return rows.map((product) => {
-         return <ProductItem key={product.name} data={product} />;
+      return products.map((product, index) => {
+         return (
+            <div key={index} className={cx("col col-4")}>
+               <ProductItem data={product} />
+            </div>
+         );
       });
    };
 
-   // console.log("product re-render", store);
+   const renderSkeletons = () => {
+      return [...Array(6).keys()].map((index) => {
+         return (
+            <div key={index} className={cx("col col-4")}>
+               <ProductSkeleton />
+            </div>
+         );
+      });
+   };
+
+   useEffect(() => {
+      if (firstTimeRender.current || prevCat.current !== category) {
+         dispatchRedux(fetchProducts({ category, page: 1, sort, filters }));
+      }
+
+      return () => {
+         firstTimeRender.current = false;
+         prevCat.current = category;
+      };
+   }, [category]);
 
    return (
       <div className={cx("product-container")}>
@@ -64,47 +78,36 @@ function Product() {
 
          <div className={cx("product-body", "row")}>
             <div className="col col-9">
-               <QuickFilter category={category} count={count} />
-               <ProductSort category={category} disable={status === 'loading'}/>
-               {/* {status === 'loading' && <Skeleton data={rows}/>} */}
-               {/* {status === "loading" && <h1>Đang tải...</h1>} */}
+               <QuickFilter />
+               <ProductSort />
 
-               {/* ngu, nếu thêm staus == 'successful' thì mội lần fetch sẽ bị giật */}
-               {!!rows?.length ? (
-                  <>
-                     <div className={cx("product-container")}>
-                        <div className="row">{renderProducts()}</div>
-                     </div>
-                     <div className={cx("pagination")}>
+               <div className={cx("product-container")}>
+                  <div className="row">
+                     {status !== "loading" && (
+                        <>{!!products.length ? renderProducts() : <NoProduct />}</>
+                     )}
+                     {(status === "loading" || status === "more-loading") && renderSkeletons()}
+                  </div>
+                  {status !== "loading" && !!products.length && (
+                     <div className={cx("pagination", { disable: remaining === 0 })}>
                         <Button
+                           disable={status === "loading" || status === "more-loading"}
                            outline
                            rounded
                            mgauto
-                           count={countProduct}
+                           count={remaining}
                            onClick={() => handleGetMore()}
                            describe="sản phẩm"
-                           status={status}
-                           icon={
-                              <i
-                                 className={cx("material-icons", "loading-btn")}
-                              >
-                                 sync
-                              </i>
-                           }
                         >
                            Xem thêm
                         </Button>
                      </div>
-                  </>
-               ) : (
-                  status === "successful" && <NoProduct />
-               )}
+                  )}
+               </div>
             </div>
 
-            <ProductFilter category={category} disable={status === 'loading'}/>
+            <ProductFilter category={category} />
          </div>
       </div>
    );
 }
-
-export default Product;

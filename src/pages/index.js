@@ -1,0 +1,12 @@
+export {default as AccountPage} from './AccountPage'
+export {default as Products} from './Products'
+export {default as Home} from './Home'
+export {default as Login} from './Login'
+export {default as Register} from './Register'
+export {default as UnauthorizedPage} from './UnauthorizedPage'
+export {default as SearchResultPage} from './SearchResultPage'
+export {default as ProductDetail} from './ProductDetail'
+
+export {default as Dashboard} from './Dashboard/Home'
+export {default as AddProduct} from './Dashboard/AddProduct'
+export {default as EditProduct} from './Dashboard/EditProduct'

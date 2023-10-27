@@ -28,7 +28,7 @@ function App() {
           );
         })}
 
-        {/* <Route element={<PersistLogin />}> */}
+        <Route element={<PersistLogin />}>
         {privateRoutes.map((route, index) => {
           const Page = route.component;
           let Layout = DefaultLayout;
@@ -51,7 +51,7 @@ function App() {
             </Route>
           );
         })}
-        {/* </Route> */}
+        </Route>
       </Routes>
     </Router>
   );
