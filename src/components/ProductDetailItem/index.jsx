@@ -22,7 +22,7 @@ function DetailProductItem({ data }) {
                {data.category_name === "dtdd" ? "Điện thoại " : "Laptop "}
                {data.name}
             </p>
-            <div className={cx("header-box")}>
+            {/* <div className={cx("header-box")}>
                <span>
                   <i className="fa-solid fa-star star"></i>{" "}
                   <i className="fa-solid fa-star star"></i>{" "}
@@ -31,15 +31,16 @@ function DetailProductItem({ data }) {
                   <i className="fa-solid fa-star star black"></i>
                </span>
                <span className={cx("rate-count")}>49 đánh giá</span>
-            </div>
+            </div> */}
          </div>
          <div className={cx("row", "main-contain")}>
             <div className={cx("col-large col-7", "box_left")}>
                {data.detail_data[0].images && <ImageSlider data={data.detail_data[0].images} />}
+               <h1>...</h1>
             </div>
             <div className={cx("col-large col-5", "box_right")}>
                <div className={cx("product-price")}>
-                  <p className={cx("cur-price")}>{moneyFormat(data?.cur_price)}</p>
+                  <p className={cx("cur-price")}>{moneyFormat(data?.cur_price)}₫</p>
                   {data.old_price && (
                      <span className={cx("old-price")}>{moneyFormat(data?.old_price)}</span>
                   )}

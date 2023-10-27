@@ -7,10 +7,8 @@ const cx = classNames.bind(styles);
 function AuthLayout({ children }) {
   return (
     <div className="app">
-      <Header less />
-      <div className={cx("auth-container")}>
-        <div className={cx("form-wrapper")}>{children}</div>
-      </div>
+      <Header less/>
+      <div className={cx("auth-container")}>{children}</div>
     </div>
   );
 }

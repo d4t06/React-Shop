@@ -34,7 +34,7 @@ function Header() {
             </div>
             <div className={cx('header-top')}>
                <div className={cx('container', 'header-top-wrap')}>
-                  <Link className={cx('brand')} to={routes.HOME}>
+                  <Link className={cx('brand')} to={'/'}>
                      HD Shop
                   </Link>
                   <Search setShowModal={setShowModal} />

@@ -2,9 +2,9 @@
 .product-header {
    display: flex;
    align-items: center;
-   padding: 0 12px;
    margin-top: 20px;
-   border-bottom: 1px solid #ccc;
+   padding-bottom: 8px;
+   border-bottom: 1px solid rgba($color: #000000, $alpha: .1);
    p {
       font-size: 2.3rem;
       font-weight: 500;

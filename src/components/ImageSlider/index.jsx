@@ -9,7 +9,7 @@ function ImageSlider({ banner, data }) {
   const imageSliderRef = useRef();
 
   // use hooks
-  const { images, attributeObj, curIndex, nextImage, previousImage } = useSlider({
+  const { images, attributeObj, curIndex, nextImage, previousImage, imageWidth } = useSlider({
     imageSliderRef,
     data,
     autoSlide: 6000
@@ -46,7 +46,7 @@ function ImageSlider({ banner, data }) {
         {images.length ? (
           images.map((item, index) => {
             return (
-              <div key={index} className={cx("slider-item")}>
+              <div key={index} style={{width: imageWidth}} className={cx("slider-item")}>
                 <img src={item} alt="" />
               </div>
             );

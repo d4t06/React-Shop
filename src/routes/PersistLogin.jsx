@@ -34,7 +34,6 @@ const PersistLogin = () => {
       console.log('auth =', auth);
    }, [isLoading]);
 
-   console.log("persist login");
    return (
       <>
          {!persist 

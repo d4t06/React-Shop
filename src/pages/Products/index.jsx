@@ -22,8 +22,8 @@ const cx = classNames.bind(styles);
 export default function Product() {
    // use store
    const dispatchRedux = useDispatch();
-   const { count, page, pageSize, products, status } = useSelector(selectedAllProduct);
-   const { filters, sort } = useSelector(selectedAllFilter);
+   const { count, page, products, status } = useSelector(selectedAllProduct);
+   const { filters, sort } = useSelector(selectedAllFilter);   
 
    // ref
    const firstTimeRender = useRef(true);

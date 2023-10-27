@@ -9,6 +9,7 @@
    overflow: hidden;
    white-space: nowrap; // overflow horizontal only
 
+
    // control
    .slider-control {
       display: inline-flex;
@@ -19,7 +20,7 @@
       transform: translateY(-50%);
       height: 40px;
       width: 40px;
-      font-size: 2rem;
+      font-size: 1.6rem;
       padding: 8px;
       background-color: #fff;
       color: #999;
@@ -32,10 +33,10 @@
       }
    }
    .right-arrow {
-      right: 5px;
+      right: 15px;
    }
    .left-arrow {
-      left: 5px;
+      left: 15px;
    }
 
    // index

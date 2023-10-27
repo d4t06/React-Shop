@@ -1,20 +1,6 @@
 .auth-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-image: url(../assets//images/background-auth.jpg);
-    background-size: cover;
-    z-index: 1;
-    min-height: 500px;
-}
-.form-wrapper {
-    width: 35%;
-    background-color: rgba($color: #f1f1f1, $alpha: .85);
-    border-radius: 15px;
-    position: relative;
-    top: calc(50% + 15px);
-    transform: translateY(-50%);
-    left: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 35px);
 }

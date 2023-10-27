@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 
 export default function useSlider({ data, imageSliderRef, autoSlide }) {
   const [images, setImages] = useState([]);
@@ -13,6 +14,8 @@ export default function useSlider({ data, imageSliderRef, autoSlide }) {
   const scrollRef = useRef();
   const timerId = useRef();
 
+  const {category} = useParams()
+
   const handleStartDrag = (e) => {
     e.preventDefault();
 
@@ -24,6 +27,7 @@ export default function useSlider({ data, imageSliderRef, autoSlide }) {
     prevPageXRef.current = e.pageX;
     imageSliderRef.current.style.scrollBehavior = "auto";
   };
+
 
   const getNewIndex = () => {
     let newIndex = curIndex;
@@ -83,13 +87,13 @@ export default function useSlider({ data, imageSliderRef, autoSlide }) {
     scrollRef.current = 0;
   };
 
+  // important function
   const checkIsScrollFinish = (curIndex) => {
     const sliderEle = imageSliderRef.current;
     const expectScroll = (curIndex - 1) * imageWidth;
+    const diff = Math.ceil(sliderEle.scrollLeft)- Math.ceil(expectScroll)
 
-    // console.log(sliderEle.scrollLeft, expectScroll, curIndex);
-
-    return Math.ceil(sliderEle.scrollLeft) === Math.ceil(expectScroll);
+    return !(Math.abs(diff) > 1);
   };
 
   const nextImage = () => {
@@ -132,7 +136,15 @@ export default function useSlider({ data, imageSliderRef, autoSlide }) {
     setImages(imageArr);
     setMaxScroll(width * (imageArr.length - 1));
     setImageWidth(width);
-  }, []);
+
+    return () => {
+      setCurIndex(1);
+      if (sliderEle) {
+        sliderEle.style.scrollBehavior = "auto";
+        sliderEle.scrollLeft = 0;
+      }
+    }
+  }, [data]);
 
   useEffect(() => {
     const sliderEle = imageSliderRef.current;
@@ -160,7 +172,7 @@ export default function useSlider({ data, imageSliderRef, autoSlide }) {
         clearInterval(timerId.current);
       }
     };
-  }, [isEnter]);
+  }, [isEnter, data]);
 
   const attributeObj = {
     onMouseDown: (e) => handleStartDrag(e),
@@ -176,5 +188,6 @@ export default function useSlider({ data, imageSliderRef, autoSlide }) {
     previousImage,
     images,
     curIndex,
+    imageWidth
   };
 }
