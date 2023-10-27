@@ -1,5 +1,5 @@
 import classNames from "classnames/bind";
-import moneyFormat from "../../utils/moneyFormat.js";
+import {moneyFormat} from "../../utils/appHelper";
 import styles from "./ProductDetailItem.module.scss";
 import {
    ImageSlider,

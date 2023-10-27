@@ -2,8 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import classNames from "classnames/bind";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../Login/Login.module.scss";
-import request from "../../utils/request";
-import { checkIcon, xIcon } from "../../assets/icons";
+import {publicRequest} from "@/utils/request";
+import { checkIcon, xIcon } from "@/assets/icons";
 
 const REGISTER_URL = "/auth/register";
 const cx = classNames.bind(styles);
@@ -69,7 +69,7 @@ function Register() {
       }
 
       try {
-         const response = await request.post(
+         const response = await publicRequest.post(
             REGISTER_URL,
             JSON.stringify({ username: user, password: password }),
             {

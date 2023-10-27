@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import moneyFormat from "../../utils/moneyFormat";
+import {moneyFormat} from "../../utils/appHelper";
 import classNames from "classnames/bind";
 import styles from "./Search.module.scss";
 import searchService from "../../services/searchService";
 import PopupStyles from "../Popup/Popup.module.scss";
 import useDebounce from "../../hooks/useDebounce";
 import Popup from "../Popup";
+import { routes } from "@/routes";
 
 const cx = classNames.bind(styles);
 const cy = classNames.bind(PopupStyles);

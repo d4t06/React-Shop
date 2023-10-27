@@ -1,4 +1,4 @@
-import request from "../utils/request"
+import {publicRequest} from "../utils/request"
 import {useAuth} from "../store"
 
 const useRefreshToken = () => {
@@ -6,7 +6,7 @@ const useRefreshToken = () => {
 
     const refresh = async () => {
         try {
-            const response = await request.get("/auth/refresh")
+            const response = await publicRequest.get("/auth/refresh")
     
             setAuth(prev => {
                 const newToken = response.data.token

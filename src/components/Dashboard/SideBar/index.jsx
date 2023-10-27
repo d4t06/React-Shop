@@ -2,12 +2,9 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import classNames from "classnames/bind";
 import ReactDom from "react-dom"
-
-import Modal from "../../Modal";
+import {Gallery, Modal} from "@/components";
 
 import styles from "./SideBar.module.scss";
-import Gallery from "../Gallery";
-
 const cx = classNames.bind(styles);
 
 function Sidebar() {

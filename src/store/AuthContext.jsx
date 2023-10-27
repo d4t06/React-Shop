@@ -19,13 +19,13 @@ const AuthProvider = ({children}) => {
     const [persist, setPersist] = useLocalStorage('persist', false)
 
     return (
-        <AuthContext.Provider value={{state: {auth, persist}, setPersist, persist}}>
+        <AuthContext.Provider value={{state: {auth, setAuth}, setPersist, persist}}>
             {children}
         </AuthContext.Provider>
     )
 }
 const useAuth = () => {
-    const {state : {auth, persist}, setPersist, setAuth}  = useContext(AuthContext)
+    const {state : {auth, setAuth}, setPersist, persist}  = useContext(AuthContext)
     return {auth, setAuth, persist, setPersist}
 }
 

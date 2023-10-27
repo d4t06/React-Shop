@@ -61,19 +61,19 @@ function Header() {
                <div className={cx('container', 'header-nav-wrap')}>
                   <ul className={cx('nav-list')}>
                      <li className={cx('nav-item')}>
-                        <Link to={`${routes.HOME}/dtdd`}>
+                        <Link to={`/dtdd`}>
                            {mobileIcons}
                            <p className={cx('nav-text')}>Điện thoại</p>
                         </Link>
                      </li>
                      <li className={cx('nav-item')}>
-                        <Link to={`${routes.HOME}/laptop`}>
+                        <Link to={`/laptop`}>
                            {laptopIcon}
                            <p className={cx('nav-text')}>Laptop</p>
                         </Link>
                      </li>
                      <li className={cx('nav-item')}>
-                        <Link to={`${routes.HOME}/laptop`}>
+                        <Link to={`/laptop`}>
                            {headPhoneIcons}
                            <p className={cx('nav-text')}>Phụ kiện</p>
                         </Link>

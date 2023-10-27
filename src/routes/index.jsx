@@ -9,19 +9,21 @@ import {
    SearchResultPage,
    UnauthorizedPage,
    ProductDetail,
+   AccountPage
 } from "../pages";
 
 import DashboardLayout from "../layouts/DashboardLayout";
 import AuthLayout from "../layouts/AuthLayout";
 
 const routes = {
-   HOME: "/React-Shop",
-   CATEGORY: "/React-Shop/:category",
-   LOGIN: "/React-Shop/login",
-   REGISTER: "/React-Shop/register",
-   SEARCH: "/React-Shop/search/:key",
-   DETAIL: "/React-Shop/:category/:key",
-   UNAUTHORIZED: "/React-Shop/unauthorized",
+   HOME: "",
+   CATEGORY: "/:category",
+   LOGIN: "/login",
+   REGISTER: "/register",
+   SEARCH: "/search/:key",
+   DETAIL: "/:category/:key",
+   UNAUTHORIZED: "/unauthorized",
+   ACCOUNT: "/account",
 };
 
 const publicRoutes = [
@@ -44,6 +46,10 @@ const publicRoutes = [
       layout: AuthLayout,
    },
    {
+      path: routes.ACCOUNT,
+      component: AccountPage,
+   },
+   {
       path: routes.CATEGORY,
       component: Products,
    },
@@ -59,25 +65,25 @@ const publicRoutes = [
 
 const privateRoutes = [
    {
-      path: "/React-Shop/dashboard",
+      path: "/dashboard",
       role: ["R1"],
       component: Dashboard,
       layout: DashboardLayout,
    },
    {
-      path: "/React-Shop/dashboard/add",
+      path: "/dashboard/add",
       role: ["R1"],
       component: AddProduct,
       layout: DashboardLayout,
    },
    {
-      path: "/React-Shop/dashboard/:category",
+      path: "/dashboard/:category",
       role: ["R1"],
       component: Dashboard,
       layout: DashboardLayout,
    },
    {
-      path: "/React-Shop/dashboard/products/edit/:href",
+      path: "/dashboard/products/edit/:href",
       role: ["R1"],
       component: EditProduct,
       layout: DashboardLayout,

@@ -1,10 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import classNames from "classnames/bind";
 
-import Button from "../../Button";
+import Button from "../Button";
 
 import styles from "./Gallery.module.scss";
-import usePrivateRequest from "../../../hooks/usePrivateRequest";
+import usePrivateRequest from "@/hooks/usePrivateRequest";
 
 const cx = classNames.bind(styles);
 

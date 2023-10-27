@@ -5,11 +5,11 @@ import classNames from "classnames/bind";
 import styles from "../../Login/Login.module.scss";
 import stylesMain from "../AddProduct/AddProduct.module.scss";
 
-import request from "../../../utils/request";
-import moneyFormat from "../../../utils/moneyFormat";
+import {publicRequest} from "@/utils/request";
+import {moneyFormat} from "@/utils/appHelper";
 import InfoItem from "../AddProduct/child/InfoItem";
-import { ProductItem } from "../../../components";
-import usePrivateRequest from "../../../hooks/usePrivateRequest";
+import { ProductItem } from "@/components";
+import usePrivateRequest from "@/hooks/usePrivateRequest";
 
 const cx = classNames.bind(styles);
 const cy = classNames.bind(stylesMain);
@@ -34,7 +34,7 @@ function EditProduct() {
 
   useEffect(() => {
     const fetch = async () => {
-      const response = await request.get(`/admin/products/${href}`);
+      const response = await publicRequest.get(`/admin/products/${href}`);
 
       const productInfo = response.data[0];
 

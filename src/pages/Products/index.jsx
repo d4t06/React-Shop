@@ -37,10 +37,6 @@ export default function Product() {
       dispatchRedux(getMoreProducts({ category, sort, filters, page: page + 1 }));
    };
 
-   // <div className={cx("col", searchResultPage ? "col-3" : preview ? "col-9" : "col-4")}>
-   //    <ProductItem key={product.name} data={product} />;
-   // </div>;
-
    const renderProducts = () => {
       return products.map((product, index) => {
          return (

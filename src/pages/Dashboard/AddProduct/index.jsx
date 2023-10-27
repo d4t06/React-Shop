@@ -1,18 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import ReactDom from "react-dom";
 
+import {moneyFormat} from "@/utils/appHelper";
+import InfoItem from "./child/InfoItem";
+import {Button, ProductItem, Gallery, Modal} from "@/components";
+import usePrivateRequest from "@/hooks/usePrivateRequest";
+
 import classNames from "classnames/bind";
 import styles from "../../Login/Login.module.scss";
 import stylesMain from "./AddProduct.module.scss";
-import moneyFormat from "../../../utils/moneyFormat";
-
-import InfoItem from "./child/InfoItem";
-import Button from "../../../components/Button";
-import ProductItem from "../../../components/ProductItem";
-import usePrivateRequest from "../../../hooks/usePrivateRequest";
-import Gallery from "../../../components/Dashboard/Gallery";
-import Modal from "../../../components/Modal";
-
 const cx = classNames.bind(styles);
 const cy = classNames.bind(stylesMain);
 

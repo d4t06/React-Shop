@@ -1,8 +1,16 @@
 import axios from "axios";
 
-const request = axios.create({
-   baseURL: import.meta.env.VITE_ENDPOINT,
+const BASE_URL = import.meta.env.VITE_ENDPOINT || "https://express-mobile-shop.vercel.app/api"
+
+const publicRequest = axios.create({
+   baseURL: BASE_URL,
    withCredentials: true,
 });
 
-export default request;
+const privateRequest = axios.create({
+   baseURL: BASE_URL,
+   withCredentials: true,
+   headers: { "Content-Type": "application/json" },
+ });
+
+export {publicRequest, privateRequest}

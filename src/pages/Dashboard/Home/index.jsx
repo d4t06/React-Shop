@@ -1,12 +1,12 @@
 import classNames from "classnames/bind";
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation, Link, useParams } from "react-router-dom";
-import usePrivateRequest from "../../../hooks/usePrivateRequest";
-import styles from "./Dashboard.module.scss";
-import useRefreshToken from "../../../hooks/useRefreshToken";
-import request from "../../../utils/request";
-import moneyFormat from "../../../utils/moneyFormat";
+import { useNavigate, Link, useParams } from "react-router-dom";
+import usePrivateRequest from "@/hooks/usePrivateRequest";
+// import {useRefreshToken} from "@/hooks";
+// import {request} from "@/utils/request";
+import {moneyFormat} from "@/utils/appHelper";
 
+import styles from "./Dashboard.module.scss";
 const cx = classNames.bind(styles);
 
 function AdminPage() {

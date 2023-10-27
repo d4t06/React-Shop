@@ -3,10 +3,10 @@ import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styles from './Login.module.scss';
 import {useAuth} from '@/store';
-import request from '../../utils/request';
+import {publicRequest} from '@/utils/request';
 // hooks
-import useInput from '../../hooks/useInput';
-import useToggleCheckbox from '../../hooks/useToggle';
+import useInput from '@/hooks/useInput';
+import useToggleCheckbox from '@/hooks/useToggle';
 
 const LOGIN_URL = '/auth/login';
 const cx = classNames.bind(styles);
@@ -36,7 +36,7 @@ function LoginPage() {
    const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-         const response = await request.post(
+         const response = await publicRequest.post(
             LOGIN_URL,
             JSON.stringify({ username: user, password: password }),
             {
@@ -49,7 +49,7 @@ function LoginPage() {
          // const avatar = response?.data?.avatar;
          // const display_name = response?.data?.display_name;
 
-         if (response?.data) {
+         if (token) {
             setAuth( {token} );
             clearUser();
             setPassword('');
@@ -64,6 +64,8 @@ function LoginPage() {
          } else {
             setErrorMsg('Đăng nhâp thất bại');
          }
+
+         console.log(">>> error", error);
       }
    };
 

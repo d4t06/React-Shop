@@ -1,5 +1,4 @@
-import { sleep } from "@/utils/appHelper";
-import request from "@/utils/request";
+import {publicRequest} from "@/utils/request";
 
 
 export const searchService = async (query) => {
@@ -7,7 +6,7 @@ export const searchService = async (query) => {
    const {sort, ...rest} = query
 
     try { 
-        const response = await request.get(`products/search`, {
+        const response = await publicRequest.get(`products/search`, {
            params: {
             ...rest,
             ...sort

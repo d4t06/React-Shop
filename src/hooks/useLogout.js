@@ -1,4 +1,4 @@
-import request from "../utils/request";
+import {publicRequest} from "../utils/request";
 import {useAuth} from "../store";
 
 const useLogout = () => {
@@ -7,7 +7,7 @@ const useLogout = () => {
     const logout = async () => {
         try {
             setAuth({})
-            await request.get("/auth/logout")
+            await publicRequest.get("/auth/logout")
         } catch (error) {
             console.log({messgae: error})
         }

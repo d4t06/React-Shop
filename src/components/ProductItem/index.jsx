@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import classNames from "classnames/bind";
 import styles from "./ProductItem.module.scss";
-import moneyFormat from "../../utils/moneyFormat.js";
-import { routes } from "@/routes";
+import {moneyFormat} from "../../utils/appHelper";
 
 const cx = classNames.bind(styles);
 export default function ProductItem({ data, preview }) {
@@ -17,7 +16,7 @@ export default function ProductItem({ data, preview }) {
                />
             </div>
          ) : (
-            <Link to={`${routes.HOME}/${data.category_name}/${data.product_id}`} className={cx("product-item-frame")}>
+            <Link to={`/${data.category_name}/${data.product_id}`} className={cx("product-item-frame")}>
                <img
                   className={cx("product-item-image")}
                   src={data.image_url || "https://placehold.co/300X400"}

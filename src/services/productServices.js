@@ -1,4 +1,4 @@
-import request from "@/utils/request";
+import {publicRequest} from "@/utils/request";
 
 export const getProducts = async (querys) => {
    // console.log("service querys", querys)
@@ -9,7 +9,7 @@ export const getProducts = async (querys) => {
 
    const {filters, sort, category, ...rest} = querys
    try {
-      const response = await request.get(`/products/${category}`, {
+      const response = await publicRequest.get(`/products/${category}`, {
          params: {
             ...rest,
             // ...filters, //brand='samsung,iphone'
@@ -31,7 +31,7 @@ export const getProductDetail = async (querys) => {
    }
    const {category, href} = querys
    try {
-      const response = await request.get(`/products/${category}/${href}`, {
+      const response = await publicRequest.get(`/products/${category}/${href}`, {
          params: {
          }
       })
@@ -47,7 +47,7 @@ export const buyProduct = async (data) => {
       return
    }
    try {
-      request.post('/products', {
+      publicRequest.post('/products', {
          body: {
             ...data
          }

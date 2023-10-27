@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './Cart.module.scss';
-import moneyFormat from '../../utils/moneyFormat';
+import {moneyFormat} from '../../utils/appHelper';
 import { useRef } from 'react';
 import * as productServices from '../../services/productServices'
 

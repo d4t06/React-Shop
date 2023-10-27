@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import privateRequest from "../utils/privateRequest"
+import {privateRequest} from "../utils/request"
 import {useAuth} from "../store"
 import useRefreshToken from "./useRefreshToken"
 
