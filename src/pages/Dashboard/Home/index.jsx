@@ -9,65 +9,9 @@ import {moneyFormat} from "@/utils/appHelper";
 import styles from "./Dashboard.module.scss";
 const cx = classNames.bind(styles);
 
-function AdminPage() {
-  const [products, setProducts] = useState([]);
-  // const refresh = useRefreshToken();
-  const privateRequest = usePrivateRequest();
-  const [isEdited, setIsedited] = useState(false);
-  const navigate = useNavigate();
-  const { category } = useParams();
+function Dashboard() {
 
-  const { count, row } = products;
-
-  const handleDelete = async (href) => {
-    if (window.confirm("Bạn có muốn xoá sản phẩm này ?")) {
-      try {
-        const controller = new AbortController();
-        const fetch = async () => {
-          try {
-            await privateRequest.get(`/admin/products/delete/${href}`, {
-              signal: controller.signal,
-            });
-          } catch (error) {
-            console.log({ message: error });
-          }
-        };
-        // fetch();
-        setIsedited(true);
-
-        return () => {
-          controller.abort();
-        };
-      } catch (error) {
-        console.log({ staus: "fail", message: "delete error" });
-      }
-    }
-  };
-
-  useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-
-    const fetch = async () => {
-      try {
-        const response = await privateRequest.get(`/admin/${category}`, {
-          signal: controller.signal,
-        });
-        isMounted && setProducts(response.data);
-        setIsedited(false);
-      } catch (error) {
-        console.log({ message: error });
-        navigate("/unauthorized");
-      }
-    };
-    fetch();
-
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
-  }, [category, isEdited]);
-
+  return <h1>Dashboard page</h1>
   return (
     <div className={cx("dashboard")}>
       <h1 className={cx("title")}>
@@ -95,8 +39,8 @@ function AdminPage() {
                     <td className={cx("product-image")}>
                       <img
                         src={
-                          item.image_path.includes(".jpg")
-                            ? item.image_path
+                          item.image_url.includes(".jpg")
+                            ? item.image_url
                             : "https://placehold.co/300x300"
                         }
                         alt=""
@@ -124,4 +68,4 @@ function AdminPage() {
     </div>
   );
 }
-export default AdminPage;
+export default Dashboard;

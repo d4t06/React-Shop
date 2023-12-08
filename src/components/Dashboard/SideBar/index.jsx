@@ -14,22 +14,22 @@ function Sidebar() {
          <ul>
             <li className={cx("sibebar__item")}>
                <i className="material-icons">phonelink</i>
-               <Link to="/dashboard/products">Tất cả sản phẩm</Link>
+               <Link to="/dashboard/products">Products</Link>
             </li>
-            <li className={cx("sibebar__item")}>
+            {/* <li className={cx("sibebar__item")}>
                <i className="material-icons">supervisor_account</i>
                <Link to="/dashboard/users">Tất cả tài khoản</Link>
-            </li>
-            <li className={cx("sibebar__item")}>
+            </li> */}
+            {/* <li className={cx("sibebar__item")}>
                <i className="material-icons">add</i>
-               <Link to="/dashboard/add">Thêm sản phẩm</Link>
-            </li>
+               <Link to="/dashboard/add">Add product</Link>
+            </li> */}
             <li
                onClick={() => setShowModal(true)}
                className={cx("sibebar__item")}
             >
                <i className="material-icons">image</i>
-               <p>Thư viện ảnh</p>
+               <p>Gallery</p>
             </li>
          </ul>
          {showModal &&

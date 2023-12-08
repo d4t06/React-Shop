@@ -31,7 +31,7 @@ const continents = [
    {
       id: 4,
       value: 'Trả góp 0%',
-      column: 'intallment',
+      column: 'installment',
       type: true,
    },
 ];

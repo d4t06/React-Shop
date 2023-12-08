@@ -15,14 +15,15 @@ function RequireAuth ({allowedRole}) {
 
      let userRole = decode?.role_code
 
-     userRole = "R1";
+    //  userRole = "R1";
+    
 
     return (
         !!allowedRole?.find(role => userRole === role)
         ? <Outlet/>
         : Object.keys(auth).length !== 0
-            ? <Navigate to="/unauthorized" state={{from: location}} replace/>
-            : <Navigate to="/login" state={{from: location}} replace/>
+            ? <Navigate to="/unauthorized" />
+            : <Navigate to="/login" />
        )
     
 }

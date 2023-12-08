@@ -130,3 +130,6 @@ li {
    opacity: .6;
    pointer-events: none;
 }
+.hidden {
+   display: none;
+}

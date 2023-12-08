@@ -14,6 +14,7 @@ import {
 
 import DashboardLayout from "../layouts/DashboardLayout";
 import AuthLayout from "../layouts/AuthLayout";
+import DashboardProduct from "@/pages/Dashboard/Product";
 
 const routes = {
    HOME: "",
@@ -79,7 +80,7 @@ const privateRoutes = [
    {
       path: "/dashboard/:category",
       role: ["R1"],
-      component: Dashboard,
+      component: DashboardProduct,
       layout: DashboardLayout,
    },
    {
